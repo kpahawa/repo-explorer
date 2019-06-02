@@ -1,0 +1,46 @@
+<div class="ui card" *ngIf="repo">
+  <div class="content">
+    <h3>
+      <a [href]="repo.html_url" class="ui blue header"> {{ repo.name }} </a>
+    </h3>
+    <div class="meta">Owner: {{ repo.owner? repo.owner.login : 'No Owner Found' }}</div>
+    <div class="ui grid">
+      <div class="ten wide column">
+        <div class="description">
+            <p> {{ repo.description }} </p> 
+        </div>
+      </div>
+      <div class="six wide column">
+        <div class="ui mini two statistics">
+          <div class="green statistic">
+            <div class="value">
+                <i class="star icon"></i> {{repo.watchers_count}}
+            </div>
+            <div class="label">Stars</div>
+          </div>
+          <div class="blue statistic">
+            <div class="value">
+                <i class="code branch icon"></i> {{repo.forks}}
+            </div>
+            <div class="label">Forks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="ui blue label" *ngIf="repo.fork">Forked</div>
+    <ng-container *ngIf="repo.license; else notSpecified">
+      <ng-container *ngIf="repo.license.url; else noUrl">
+          <a class="ui license label" [href]="repo.license.url">{{repo.license.name}}</a>
+      </ng-container>
+      <ng-template #noUrl>
+          <a class="ui label">{{repo.license.name}}</a>
+      </ng-template>
+    </ng-container>
+    <ng-template #notSpecified>
+        <a class="ui label">No License Specified</a>
+    </ng-template>
+  </div>
+</div>
+<br>

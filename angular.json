@@ -23,9 +23,13 @@
               "src/assets"
             ],
             "styles": [
+              "./semantic/dist/semantic.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./semantic/dist/semantic.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -79,9 +83,13 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "./semantic/dist/semantic.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./semantic/dist/semantic.min.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

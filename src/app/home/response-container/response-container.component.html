@@ -1,0 +1,15 @@
+<ng-container *ngIf="noResults; else weGotResults">
+  <div class="ui negative message">
+    <div class="header">
+      No Results Found
+    </div>
+    <p>We're sorry, we didn't find any repositories for your search parameters. Please try again. </p>
+  </div>
+</ng-container>
+<ng-template #weGotResults>
+  <h3 class="ui header">Total results: {{results.total_count}}</h3>
+  <h5 class="extra">Note: Only up to 30 results will be shown</h5>
+  <ng-container *ngFor="let repo of items">
+    <app-repo-block [repo]="repo"></app-repo-block>
+  </ng-container>
+</ng-template>

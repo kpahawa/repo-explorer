@@ -1,0 +1,92 @@
+<div class="ui form" [formGroup]="fg" (keyup.enter)="queryGit()">
+  <div class="ui grid container">
+    <div class="eight wide column">
+      <div class="required field" [ngClass]="{'error': fg.get('text').errors?.required && fg.get('text').touched}">
+        <label>Repo Text</label>
+        <input type="text" name="repoText" formControlName="text">
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="inline fields">
+        <div class="field">
+          <label style="width: 100%">Stars</label>
+          <select class="ui star dropdown" (change)="setOption($event.target.value)">
+            <option *ngFor="let option of options" [ngValue]="option">{{option}}</option>
+          </select>
+        </div>
+        
+        <ng-container *ngIf="starOption !== 'Any' ">
+          <div class='required field' 
+              [ngClass]="{'error': (fg.get('range1').errors?.pattern && fg.get('range1').touched) || 
+                                    fg.errors?.invalidStartingValue}">
+            <label>{{starOption === 'Between' ? 'Star Range Start' : 'Star Value'}}</label>
+            <input type="text" formControlName="range1" class="range1-field" name="range1">
+          </div>
+        </ng-container>
+        
+        <div class='required field' 
+            *ngIf="starOption === 'Between'"
+            [ngClass]="{'error': (fg.get('range2').errors?.pattern && fg.get('range2').touched) || 
+                                fg.errors?.invalidEndingValue}">
+          <label>Star Range End</label>
+          <input type="text" formControlName="range2" class="range2-field" name="range2">
+        </div>
+      </div>
+    </div>
+  
+    <div class="eight wide column">
+      <div class="field">
+        <label>Select License</label>
+        <select class="ui license dropdown" formControlName="license">
+          <option value="default">Any</option>
+          <option *ngFor="let lo of licenseOptions" [value]="lo.keyword">{{lo.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class='field'>
+        <div class="ui slider checkbox">
+          <input type="checkbox" formControlName="isForked">
+          <label>Include Forked</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="ui container searchContainer">
+    <button class="ui green button" [disabled]="fg.invalid" (click)="queryGit()">
+      Search
+      <i class="ui search searchButton icon"></i>
+    </button>
+  </div>
+</div>
+<br>
+<div class="ui error message" *ngIf="(fg.errors || 
+                                    (fg.get('text').errors && fg.get('text').touched) || 
+                                    fg.get('range1').errors || fg.get('range2').errors)">
+  <ul class="list">
+    <li *ngIf="fg.get('text').errors?.required && fg.get('text').touched">The repository search key is required</li>
+    <ng-container *ngIf="starOption !== 'Any'">
+      <li *ngIf="fg.get('range1').errors?.pattern && 
+                fg.get('range1').touched">Please enter only digits for {{starOption === 'Between' ? 'starting range' : 'star value'}} </li>
+      
+      <li *ngIf="fg.get('range2').errors?.pattern && 
+                fg.get('range2').touched && 
+                starOption === 'Between'">Please enter only digits for the ending range</li>
+    </ng-container>
+    <li *ngIf="fg.errors?.invalidStartingValue">{{fg.errors.invalidStartingValue}}</li>
+    <li *ngIf="fg.errors?.invalidEndingValue">{{fg.errors.invalidEndingValue}}</li>
+  </ul>
+</div>
+<br>
+<app-response-container *ngIf="results" [results]="this.results"  #apiResults></app-response-container>
+
+<div *ngIf="error">
+  <br>
+  <div class="ui error bad-response message">
+    <h3 class="ui header">{{error.name}}</h3>
+    <div class="content">
+      <p>{{error.message}}</p>
+    </div>
+  </div>
+</div>
