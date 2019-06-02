@@ -35,12 +35,12 @@ export class HomeComponent implements OnInit {
     this._loaderService.hideLoader();
   }
 
-  private setOption(option: string) {
+  setOption(option: string) {
     this.starOption = option;
     this.fg.updateValueAndValidity();
   }
 
-  private queryGit() {
+  queryGit() {
     this._loaderService.showLoader();
     this.error = null;
     this.results = null;
